@@ -18,15 +18,10 @@ from django.urls import path
 from django.urls import include
 from django.views.generic import RedirectView
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
-
-urlpatterns += [
-     path('salesmanager/', include('salesmanager.urls')),
-]
-
-
-urlpatterns += [
-    path('', RedirectView.as_view(url='/salesmanager/', permanent=True)),
+    path('api/', include('salesmanager.urls')),
+    path('', RedirectView.as_view(url = 'salesmanager/', permanent=True))
 ]
