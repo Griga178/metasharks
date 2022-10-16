@@ -3,9 +3,16 @@ from . import views
 
 
 urlpatterns = [
-    path('salesmanager/', views.GetOrderInfoView.as_view()),
-    path('colors/', views.ColorListAPIView.as_view(), name='api_colors'),
-    path('colorsVT/', views.ColorSerializerVerT.as_view(), name='api_colorsT'),
-    path('brands/', views.CarBrandListAPIView.as_view(), name='api_brands'),
-    path('models/', views.CarModelListAPIView.as_view(), name='api_models'),
+    path('color/', views.ColorListCreate.as_view(), name = 'color create list'),
+    path('color/<str:pk>', views.ColorCRUD.as_view(), name = 'color crud'),
+    path('brand/', views.BrandListCreate.as_view(), name = 'brands create list'),
+    path('brand/<str:pk>', views.BrandCRUD.as_view(), name = 'brand crud'),
+    path('model/', views.ModelListCreate.as_view(), name = 'model create list'),
+    path('model/<str:pk>/', views.ModelCRUD.as_view(), name = 'model crud'),
+    path('order/', views.OrderListCreate.as_view(), name='order create list'),
+    path('order/<str:pk>', views.OrderCRUD.as_view(), name = 'order crud'),
+
+    path('colors_order/', views.ColorsView.as_view(), name = 'colors orders'),
+    path('brands_order/', views.BrandsView.as_view(), name = 'colors orders')
+
 ]

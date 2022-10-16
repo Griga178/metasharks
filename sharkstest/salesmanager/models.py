@@ -40,8 +40,8 @@ class Order(models.Model):
     id = models.BigAutoField(primary_key = True)
     color_name = models.ForeignKey('Color', null = False, on_delete = models.PROTECT)
     model_name = models.ForeignKey('CarModel', null = False, on_delete = models.PROTECT)
-    ammount = models.IntegerField(help_text = "Введите колличество автомобилей")
-    order_date = models.DateField(default = timezone.now, null = False)
+    amount = models.IntegerField(help_text = "Введите колличество автомобилей")
+    order_date = models.DateField(default = timezone.localdate, null = False)
 
     def __str__(self):
         return f'{self.id}. {self.model_name.brand_name.name} {self.model_name.name} - {self.color_name.name}'
