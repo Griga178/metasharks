@@ -1,62 +1,72 @@
-# from django.shortcuts import render
+from .models import Color, CarBrand, CarModel, Order
+from .serializers import ColorSerializer,  CarBrandSerializer, CarModelSerializer, OrderSerializer
 
-from rest_framework.response import Response
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+
+from django.db.models import Count, F, Sum
 from rest_framework.views import APIView
-
-from .models import Order
-from .serializers import OrderSerializer, ColorSerializer, CarBrandSerializer, CarModelSerializer
-
-from rest_framework.generics import ListAPIView
-from . import models
-
-# Create your views here.
-class GetOrderInfoView(APIView):
-    def get(self, request):
-        # Получаем набор всех записей из таблицы Order
-        queryset = Order.objects.all()
-        # Сериализуем извлечённый набор записей
-        serializer_for_queryset = OrderSerializer(
-            instance = queryset, # Передаём набор записей
-            many = True # Указываем, что на вход подаётся именно набор записей
-        )
-        return Response(serializer_for_queryset.data)
-
-
-class ColorListAPIView(ListAPIView):
+from rest_framework.response import Response
+#                - - - - * - - - - ЦВЕТА АВТО - - - - * - - - -
+class ColorListCreate(ListCreateAPIView):
+    queryset = Color.objects.all()
     serializer_class = ColorSerializer
 
-    def get_queryset(self):
-        return models.Color.objects.all()
+class ColorCRUD(RetrieveUpdateDestroyAPIView):
+    queryset = Color.objects.all()
+    serializer_class = ColorSerializer
 
-from rest_framework import status
-
-class ColorSerializerVerT(APIView):
-    def get(self, request, *args, **kwargs):
-        colors = models.Color.objects.all()
-        serializer = ColorSerializer(colors, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
-    def post(self, request, *args, **kwargs):
-        '''
-        Create the Todo with given todo data
-        '''
-        data = {
-            'name': request.data.get('name')
-        }
-        serializer = ColorSerializer(data = data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-
-class CarBrandListAPIView(ListAPIView):
-    serializer_class = CarBrandSerializer
-
-    def get_queryset(self):
-        return models.CarBrand.objects.all()
-
-class CarModelListAPIView(ListAPIView):
+#                 - - - - * - - - - МОДЕЛИ АВТО - - - - * - - - -
+class ModelListCreate(ListCreateAPIView):
+    queryset = CarModel.objects.all()
     serializer_class = CarModelSerializer
 
-    def get_queryset(self):
-        return models.CarModel.objects.all()
+class ModelCRUD(RetrieveUpdateDestroyAPIView):
+    queryset = CarModel.objects.all()
+    serializer_class = CarModelSerializer
+
+#                 - - - - * - - - - МАРКИ АВТО - - - - * - - - -
+class BrandListCreate(ListCreateAPIView):
+    queryset = CarBrand.objects.all()
+    serializer_class = CarBrandSerializer
+
+class BrandCRUD(RetrieveUpdateDestroyAPIView):
+    queryset = CarBrand.objects.all()
+    serializer_class = CarBrandSerializer
+
+#                 - - - - * - - - - ЗАКАЗЫ АВТО - - - - * - - - -
+class OrderListCreate(ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+class OrderCRUD(RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+# api список цветов с указанием количества заказанных авто каждого цвета
+class ColorsView(APIView):
+    def get(self, req):
+        qs = Order.objects.annotate(color_id = F('color_name')).values('color_id').annotate(cars_amount = Sum('amount'))
+        sum_dict = {}
+        for el in qs:
+            color_name = Color.objects.get(pk = el['color_id']).name
+            cars_amount = el['cars_amount']
+            if color_name in sum_dict:
+                sum_dict[color_name] += cars_amount
+            else:
+                sum_dict[color_name] = cars_amount
+        return Response(f'{sum_dict}')
+
+# список марок с указанием количества заказанных авто 
+class BrandsView(APIView):
+    def get(self, req):
+        qs = Order.objects.annotate(model = F('model_name')).values('model').annotate(cars_amount = Sum('amount'))
+        sum_dict = {}
+        for el in qs:
+            model_obj = CarModel.objects.get(pk = el['model'])
+            model_name = f'{model_obj.brand_name} {model_obj.name}'
+            cars_amount = el['cars_amount']
+            if model_name in sum_dict:
+                sum_dict[model_name] += cars_amount
+            else:
+                sum_dict[model_name] = cars_amount
+        return Response(f'{sum_dict}')
