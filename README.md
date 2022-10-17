@@ -15,7 +15,8 @@ pip install -r requirements.txt
 - manage.py migrate
 
 ## Заполнить тестовыми данными
-- post_info.py
+- post_info.py (примеры post запросов)
+- get_info.py (примеры get запросов)
 
 ### Тут таблица заказов с сортировкой и фильтром
 `http://127.0.0.1:8000/api/`
