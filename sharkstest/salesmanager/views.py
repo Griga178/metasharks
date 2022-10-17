@@ -1,11 +1,18 @@
 from .models import Color, CarBrand, CarModel, Order
 from .serializers import ColorSerializer,  CarBrandSerializer, CarModelSerializer, OrderSerializer
-
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 
 from django.db.models import Count, F, Sum
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from.tables import OrderTable, OrderFilter
+from django.shortcuts import render
+from django.views.generic import ListView
+from django_tables2 import RequestConfig
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+
 #                - - - - * - - - - ЦВЕТА АВТО - - - - * - - - -
 class ColorListCreate(ListCreateAPIView):
     queryset = Color.objects.all()
@@ -56,7 +63,7 @@ class ColorsView(APIView):
                 sum_dict[color_name] = cars_amount
         return Response(f'{sum_dict}')
 
-# список марок с указанием количества заказанных авто 
+# api список марок с указанием количества заказанных авто
 class BrandsView(APIView):
     def get(self, req):
         qs = Order.objects.annotate(model = F('model_name')).values('model').annotate(cars_amount = Sum('amount'))
@@ -70,3 +77,11 @@ class BrandsView(APIView):
             else:
                 sum_dict[model_name] = cars_amount
         return Response(f'{sum_dict}')
+
+# таблица списка заказов
+class FilteredOrderListView(SingleTableMixin, FilterView):
+    table_class = OrderTable
+    model = Order
+    template_name = 'order_list.html'
+    paginate_by = 10
+    filterset_class = OrderFilter

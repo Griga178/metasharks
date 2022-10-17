@@ -12,6 +12,9 @@ urlpatterns = [
     path('order/', views.OrderListCreate.as_view(), name='order create list'),
     path('order/<str:pk>', views.OrderCRUD.as_view(), name = 'order crud'),
 
+
+    path('', views.FilteredOrderListView.as_view(), name = 'orders template'),
+
     path('colors_order/', views.ColorsView.as_view(), name = 'colors orders'),
     path('brands_order/', views.BrandsView.as_view(), name = 'colors orders')
 

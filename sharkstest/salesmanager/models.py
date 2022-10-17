@@ -6,7 +6,7 @@ class Color(models.Model):
     """
     Возможные цвета автомобилей
     """
-    name = models.CharField(max_length = 200, help_text = "Введите цвет автомобиля")
+    name = models.CharField(max_length = 200, help_text = "Введите цвет автомобиля", unique = True)
 
     def __str__(self):
         return self.name
@@ -15,7 +15,7 @@ class CarBrand(models.Model):
     """
     Возможные марки автомобилей
     """
-    name = models.CharField(max_length = 200, help_text = "Введите марку автомобиля")
+    name = models.CharField(max_length = 200, help_text = "Введите марку автомобиля", unique = True)
 
     def __str__(self):
         return self.name

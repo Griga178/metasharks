@@ -1,33 +1,44 @@
 import requests
 
-url = 'http://localhost:8000/api/salesmanager/'
-response = requests.get(url)
+def get_colors(id = ''):
+    url = f'http://127.0.0.1:8000/api/color/{id}'
+    response = requests.get(url)
+    return response.json()
 
-response_on_python = response.json()
+def get_brands(id = ''):
+    url = f'http://127.0.0.1:8000/api/brand/{id}'
+    response = requests.get(url)
+    return response.json()
 
-for row in response_on_python:
-    print(row)
+def get_models(id = ''):
+    url = f'http://127.0.0.1:8000/api/model/{id}'
+    response = requests.get(url)
+    return response.json()
 
-url = 'http://localhost:8000/api/colors/'
-response = requests.get(url)
+def get_orders(id = ''):
+    url = f'http://127.0.0.1:8000/api/order/{id}'
+    response = requests.get(url)
+    return response.json()
 
-response_on_python = response.json()
+def get_cars_sum_by_color():
+    url = 'http://127.0.0.1:8000/api/colors_order/'
+    response = requests.get(url)
+    return response.json()
 
-for row in response_on_python:
-    print(row)
+def get_cars_sum_by_model():
+    url = 'http://127.0.0.1:8000/api/brands_order/'
+    response = requests.get(url)
+    return response.json()
 
-url = 'http://localhost:8000/api/brands/'
-response = requests.get(url)
+def all_requests(id = ''):
+    print(get_colors(id))
+    print(get_brands(id))
+    print(get_models(id))
+    print(get_orders(id))
 
-response_on_python = response.json()
+    print(get_cars_sum_by_color())
+    print(get_cars_sum_by_model())
 
-for row in response_on_python:
-    print(row)
-
-url = 'http://localhost:8000/api/models/'
-response = requests.get(url)
-
-response_on_python = response.json()
-
-for row in response_on_python:
-    print(row)
+if __name__ == "__main__":
+    # all_requests()
+    print(get_brands())

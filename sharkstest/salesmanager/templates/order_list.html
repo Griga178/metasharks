@@ -1,0 +1,28 @@
+{% load render_table from django_tables2 %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      body {margin-left: 50px;
+      margin-top: 25px;}
+      td, th {
+        padding: 9px;
+        border: 1px solid black;
+        }
+    </style>
+  </head>
+  <body>
+    {% if filter %}
+    <form action="" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+    {% endif %}
+    {% render_table table %}
+  </body>
+</html>
