@@ -4,11 +4,8 @@
 pip install -r requirements.txt
 
 ### Подключить БД:
- metasharks
- ├── sharkstest
- │   ├── sharkstest
- │   ├── sharkstest
- │   ├── settings.py - DATABASES  <-- ТУТ
+
+settings.py - DATABASES  
 
 ### Запустить миграции:
 - manage.py makemigrations
