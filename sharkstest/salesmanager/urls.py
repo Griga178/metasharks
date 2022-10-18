@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.urls import path
 from . import views
 
@@ -14,7 +15,7 @@ urlpatterns = [
 
 
     path('', views.FilteredOrderListView.as_view(), name = 'orders template'),
-
+    
     path('colors_order/', views.ColorsView.as_view(), name = 'colors orders'),
     path('brands_order/', views.BrandsView.as_view(), name = 'colors orders')
 

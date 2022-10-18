@@ -4,3 +4,4 @@ requests==2.28.1
 django_tables2==2.4.1
 django_filter==22.1
 django_bootstrap3==22.1
+drf-yasg==1.21.4

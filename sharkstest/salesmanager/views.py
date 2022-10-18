@@ -85,3 +85,12 @@ class FilteredOrderListView(SingleTableMixin, FilterView):
     template_name = 'order_list.html'
     paginate_by = 10
     filterset_class = OrderFilter
+
+# SWAGGER
+
+# from django.conf.urls import url
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title = 'api')
+
+# urlpatterns += [url(r'^$', schema_view)]
