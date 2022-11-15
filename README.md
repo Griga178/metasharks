@@ -1,4 +1,4 @@
-# Запуск:
+# Запуск: 
 
 ### Установить библиотеки:
 pip install -r requirements.txt
